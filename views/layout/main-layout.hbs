@@ -72,11 +72,35 @@
             </div>
         </div>
     </nav>
+ {{#if hasErrorMessages}} 
+
+    <div class="alert alert-danger alert-dismissible fade show " role="alert">
+        <ul>
+          {{#each errorMessages}}
+            <li>{{this}}</li>
+          {{/each}}
+        </ul>  
+        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+    </div>   
+{{/if}}
+
+ {{#if hasInfo}} 
+    <div class="alert alert-success alert-dismissible fade show " role="alert">
+        <ul>
+            <li>{{info}}</li>
+        </ul>  
+        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+    </div>   
+{{/if}}
+
 
     {{{body}}}
 </body>
 <script src="../../assets/js/jquery/jquery-3.6.0.min.js"></script>
 <script src="../../assets/js/index.js"></script>
+<script src="/assets/js/bootstrap/bootstrap.js"></script>
+
+
 {{#if activeCandidatos}}
 <script src="../../assets/js/candidatos/candidatos.js"></script>{{/if}}
 {{#if activePuesto}}
@@ -85,6 +109,8 @@
 <script src="../../assets/js/partidos/partidos.js"></script>{{/if}}
 {{#if activeCiudadanos}}
 <script src="../../assets/js/ciudadanos/ciudadanos.js"></script>{{/if}}
-
+{{#if activeElecciones}}
+<script src="../../assets/js/eleccion/eleccion.js"></script>
+{{/if}}
 
 </html>

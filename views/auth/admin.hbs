@@ -2,16 +2,16 @@
     <form action="/admin/home" method="POST">
         <h1 class="h3 mb-3 fw-normal">Iniciar Sesión</h1>
         <div class="form-floating">
-            <input type="text" class="form-control" id="usuario">
+            <input type="text" class="form-control" id="usuario" name="usuario">
             <label for="usuario">Usuario</label>
         </div>
         <div class="form-floating">
-            <input type="password" class="form-control" id="contraseña">
+            <input type="password" class="form-control" id="contraseña" name="contraseña">
             <label for="contraseña">Contraseña</label>
         </div>
 
         <div class="checkbox mb-3">
         </div>
-        <button class="w-100 btn btn-lg btn-primary" type="submit">Iniciar Sesión</button>
+        <button class="w-100 btn btn-lg btn-primary" type="submit" id="admin-iniciar">Iniciar Sesión</button>
     </form>
 </main>

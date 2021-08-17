@@ -11,7 +11,7 @@ const Sequelize = require('sequelize')
 //////////////////////////////////// GET ///////////////////////////////////////////////
 
 exports.GetHome = (req, res, next) => {
-
+  
     res.render("admin/home", {
         pageTitle: "Admin Home",
         activeAdmin: true,
@@ -30,15 +30,24 @@ exports.GetPuesto = (req, res, next) => {
         elecciones.findOne({ where: { estado: true } }).then(result => {
             eleccion = result == null ? false : true;
 
-            res.render("admin/puestos electivos/puestos electivos", {
-                pageTitle: "Puestos Electivos",
-                activePuesto: true,
-                puestos: puestosArray,
-                hasPuesto: puestosArray.length > 0,
-                hiddenNav: true,
-                eleccion: eleccion,
+            if(puestosArray.length > 0){
+                
+                res.render("admin/puestos electivos/puestos electivos", {
+                    pageTitle: "Puestos Electivos",
+                    activePuesto: true,
+                    puestos: puestosArray,
+                    hiddenNav: true,
+                    eleccion: eleccion,
+    
+                });
+                
+            }
+            else{
 
-            });
+                req.flash('erros','No Hay puesto disponible');
+                return res.redirect('/admin/partidos')
+            }
+            
 
         }).catch(err => {
             console.log(err)
@@ -91,16 +100,21 @@ exports.GetCiudadanos = (req, res, next) => {
         elecciones.findOne({ where: { estado: true } }).then(result => {
             eleccion = result == null ? false : true;
 
-            res.render("admin/ciudadanos/ciudadanos", {
-                pageTitle: "Ciudadanos",
-                activeCiudadanos: true,
-                ciudadanos: ciudadanosArray,
-                hasCiudadanos: ciudadanosArray.length > 0,
-                hiddenNav: true,
-                eleccion: eleccion,
+            if(ciudadanosArray.length > 0){
+                res.render("admin/ciudadanos/ciudadanos", {
+                    pageTitle: "Ciudadanos",
+                    activeCiudadanos: true,
+                    ciudadanos: ciudadanosArray,
+                    hiddenNav: true,
+                    eleccion: eleccion,
+                });
+            }
+            else{
 
-
-            });
+                req.flash('erros','No Hay Ciudadanos Disponibles');
+                return res.redirect('/admin/ciudadanos');
+            }
+            
 
         }).catch(err => {
             console.log(err)
@@ -151,15 +165,21 @@ exports.GetPartidos = (req, res, next) => {
         elecciones.findOne({ where: { estado: true } }).then(result => {
             eleccion = result == null ? false : true;
 
-            res.render("admin/partidos/partidos", {
-                pageTitle: "partidos",
-                activePartidos: true,
-                partidos: partidosArray,
-                hasPartidos: partidosArray.length > 0,
-                hiddenNav: true,
-                eleccion: eleccion,
 
-            });
+            if(partidosArray.length > 0){
+                res.render("admin/partidos/partidos", {
+                    pageTitle: "partidos",
+                    activePartidos: true,
+                    partidos: partidosArray,
+                    hiddenNav: true,
+                    eleccion: eleccion,
+                });
+            }
+            else{
+                req.flash('erros','No Hay Partidos Disponibles');
+                return res.redirect('/admin/partidos');
+            }
+           
 
         }).catch(err => {
             console.log(err)
@@ -203,7 +223,7 @@ exports.GetEditarPartidos = (req, res, next) => {
 //ELECCIONES
 
 exports.GetElecciones = (req, res, next) => {
-    elecciones.findAll({ order: [["estado", "DESC"], ["fecha", "ASC"]] }).then(result => {
+    elecciones.findAll({ order: [["estado", "DESC"], ["updatedAt", "DESC"]] }).then(result => {
 
         const eleccionesArray = result.map(result => result.dataValues)
         let activeAdd = true;
@@ -221,16 +241,33 @@ exports.GetElecciones = (req, res, next) => {
                 }
             })
 
-            res.render("admin/elecciones/elecciones", {
-                pageTitle: "Elecciones",
-                activeElecciones: true,
-                elecciones: eleccionesArray,
-                hiddenNav: true,
-                activeAdd: activeAdd,
-                hasElecciones: eleccionesArray.length > 0,
-                hasCiudadanos: hasCiudadanos
-    
-            });
+            if(eleccionesArray.length > 0 && hasCiudadanos){
+
+                res.render("admin/elecciones/elecciones", {
+                    pageTitle: "Elecciones",
+                    activeElecciones: true,
+                    elecciones: eleccionesArray,
+                    hiddenNav: true,
+                    activeAdd: activeAdd,    
+                });
+            }
+            else if (hasCiudadanos == false){
+
+                req.flash('erros','No hoy ciudadonos registrado');
+                return res.redirect('/admin/eleccion')
+            }
+            else if (eleccionesArray.length > 0  == false){
+
+                req.flash('erros','No hoy elecciones realizado');
+                return res.redirect('/admin/eleccion')
+            }
+            else{
+
+                req.flash('erros','No hoy ciudadonos registrado');
+                req.flash('erros','No hoy elecciones realizado');
+                return res.redirect('/admin/eleccion')
+            }
+            
 
         }).catch(err => {
         console.log(err)
@@ -248,6 +285,7 @@ exports.GetResultado = (req, res, next) => {
     let votosLista = {};
     let candidato_lista = [];
     let participantes_lista = [];
+    let puesto_lista = [];
     let idEleccion =  req.params.idEleccion;
 
     votos.findAll({
@@ -271,7 +309,8 @@ exports.GetResultado = (req, res, next) => {
            
 
             if (votosLista.hasOwnProperty(puesto) === false) {
-                votosLista[puesto] = []
+                votosLista[puesto] = [];
+                puesto_lista.push(element.puesto_electivo.dataValues.id);
                
             }
 
@@ -313,8 +352,7 @@ exports.GetResultado = (req, res, next) => {
             }
             
         });
-        console.log('-------')
-        console.log(votosLista)
+       
         
         participantes.findAll({where:{eleccioneId: idEleccion}}).then(result=>{
 
@@ -340,17 +378,14 @@ exports.GetResultado = (req, res, next) => {
     
     
             }
-
-
-         
-
     
             candidatos.findAll({
-                where: { [Op.not]: [{ id: candidato_lista }], [Op.and]:[{ id: participantes_lista }]},
+                where: { [Op.not]: [{ id: candidato_lista }], [Op.and]:[{ id: participantes_lista },{puestoElectivoId:puesto_lista}]},
                 include: [{ model: partidos }, { model: puestos }]
             }).
                 then(result => {
-    
+                    
+                   
                     result.forEach(element => {
     
     
@@ -362,11 +397,9 @@ exports.GetResultado = (req, res, next) => {
                         let logo = element.partido.dataValues.logo;
                         let partido = element.partido.dataValues.nombre;
                         votosLista[puesto].push([ 0,candidato_Id, nombre, apellido, foto, logo, partido, 0])
-    
+
                     })
 
-                
-    
                     res.render("admin/elecciones/resultado", {
                         pageTitle: "Resultado de la Elección",
                         activeElecciones: true,
@@ -435,15 +468,21 @@ exports.GetAgregarElecciones = (req, res, next) => {
         if (puesto5 >= 2) { allowEleccion = true }
         if (puesto6 >= 2) { allowEleccion = true }
 
+        if(allowEleccion){
+    
+            res.render("admin/elecciones/guardar", {
+                pageTitle: "Agregar Elecciones",
+                activeElecciones: true,
+                hiddenNav: true,
+            });
+        }
+        else{
 
-        res.render("admin/elecciones/guardar", {
-            pageTitle: "Agregar Elecciones",
-            activeElecciones: true,
-            hiddenNav: true,
-            on: allowEleccion,
+            req.flash('erros','Para iniciar una Elección deben de haber al menos 2 Candidatos activos');
+            return res.redirect('/admin/eleccion')
+        }
 
-
-        });
+      
 
     }).catch(err => {
         console.log(err)
@@ -464,16 +503,21 @@ exports.GetCandidatos = (req, res, next) => {
         elecciones.findOne({ where: { estado: true } }).then(result => {
             const eleccion = result == null ? false : true;
 
-            res.render("admin/candidatos/candidatos", {
-                pageTitle: "Candidatos",
-                activeCandidatos: true,
-                candidatos: candidatosArray,
-                hasCandidatos: candidatosArray.length > 0,
-                hiddenNav: true,
-                eleccion: true,
-                eleccion: eleccion,
+            if(candidatosArray.length > 0){
+                res.render("admin/candidatos/candidatos", {
+                    pageTitle: "Candidatos",
+                    activeCandidatos: true,
+                    candidatos: candidatosArray,
+                    hiddenNav: true,
+                    eleccion: true,
+                    eleccion: eleccion,
+                });
+            }else{
 
-            });
+                req.flash('erros','No hoy candidatos disponible');
+                return res.redirect('/admin/candidatos');
+            }
+           
         }).catch(err => {
             console.log(err)
         });
@@ -491,16 +535,33 @@ exports.GetAgregarCandidatos = (req, res, next) => {
         puestos.findAll({ order: [["nombre", "ASC"]], where: { estado: true } }).then(result => {
             const puestosArray = result.map(result => result.dataValues)
 
-            res.render("admin/candidatos/guardar", {
-                pageTitle: "Agregar Candidatos",
-                activeCandidatos: true,
-                puestos: puestosArray,
-                partidos: partidosArray,
-                notPartidos: partidosArray == "",
-                notPuestos: puestosArray == "",
-                hiddenNav: true,
-                normal: true,
-            });
+            if(partidosArray == "" && puestosArray == ""){
+
+                req.flash('errors','No hay partidos disponible');
+                req.flash('errors','No hay puestos disponible');
+                return res.redirect('/admin/candidatos');
+
+            }
+            else if(partidosArray == "" ){
+
+                req.flash('errors','No hay partidos disponible');
+                return res.redirect('/admin/candidatos');
+            }
+            else if(puestosArray == ""){
+
+                req.flash('errors','No hay puestos disponible');
+                return res.redirect('/admin/candidatos');
+            }
+            else{
+                res.render("admin/candidatos/guardar", {
+                    pageTitle: "Agregar Candidatos",
+                    activeCandidatos: true,
+                    puestos: puestosArray,
+                    partidos: partidosArray,
+                    hiddenNav: true,
+                    normal: true,
+                });
+        }
 
         }).catch(err => {
             console.log(err)
@@ -552,21 +613,26 @@ exports.GetEditarCandidatos = (req, res, next) => {
                     elecciones.findOne({ where: { estado: true } }).then(result => {
                         const eleccion = result == null ? false : true;
 
-                        res.render("admin/candidatos/guardar", {
-                            pageTitle: "Editar candidatos",
-                            activeCandidatos: true,
-                            editMode: true,
-                            candidatos: candidatosData,
-                            puestos: puestosArray,
-                            partidos: partidosArray,
-                            hiddenNav: true,
-                            notPartidos: partidosArray == "",
-                            notPuestos: puestosArray == "",
-                            eleccion: eleccion,
-                            disabledPartido: disabledPartido,
-                            disabledPuesto: disabledPuesto,
+                      
 
-                        })
+                            res.render("admin/candidatos/guardar", {
+                                pageTitle: "Editar candidatos",
+                                activeCandidatos: true,
+                                editMode: true,
+                                candidatos: candidatosData,
+                                puestos: puestosArray,
+                                partidos: partidosArray,
+                                hiddenNav: true,
+                                notPartidos: partidosArray == "",
+                                notPuestos: puestosArray == "",
+                                eleccion: eleccion,
+                                disabledPartido: disabledPartido,
+                                disabledPuesto: disabledPuesto,
+                            })
+
+
+
+                      
                     }).catch(err => {
                         console.log(err)
                     });
@@ -654,17 +720,80 @@ exports.PostGuardarCiudadanos = (req, res, next) => {
     const apellido = req.body.apellido;
     const correo = req.body.correo;
 
-    ciudadanos.create({
-        cedula: cedula,
-        nombre: nombre,
-        apellido: apellido,
-        email: correo,
-        estado: true
-    }).then(result => {
-        res.redirect("/admin/ciudadanos")
-    }).catch(err => {
-        console.log(err);
-    });
+    ciudadanos.findOne({where:{email:correo}}).then(result=>{
+
+        const datoEmail = result? true: false;
+        ciudadanos.findOne({where:{cedula:cedula}}).then(result=>{
+         
+            const datocedula = result? true: false;
+
+
+            if(datoEmail && datocedula){
+
+                return res.render("admin/ciudadanos/guardar", {
+                    pageTitle: "Editar Ciudadanos",
+                    activeCiudadanos: true,
+                    error: true,
+                    errorEmail: true,
+                    errorCedula: true,
+                    hiddenNav: true,
+                    cedula : cedula, 
+                    nombre : nombre ,
+                    apellido: apellido,
+                    correo : correo, 
+                })   
+            }
+            else if(datoEmail){
+
+                return res.render("admin/ciudadanos/guardar", {
+                    pageTitle: "Editar Ciudadanos",
+                    activeCiudadanos: true,
+                    error: true,
+                    errorEmail: true,
+                    hiddenNav: true,
+                    cedula : cedula, 
+                    nombre : nombre ,
+                    apellido: apellido,
+                    correo : correo, 
+                })   
+            }
+            else if(datocedula){
+
+                return res.render("admin/ciudadanos/guardar", {
+                    pageTitle: "Editar Ciudadanos",
+                    activeCiudadanos: true,
+                    error: true,
+                    errorCedula: true,
+                    hiddenNav: true,
+                    cedula : cedula, 
+                    nombre : nombre ,
+                    apellido: apellido,
+                    correo : correo, 
+                })
+            }
+
+            else{
+    
+                ciudadanos.create({
+                    cedula: cedula,
+                    nombre: nombre,
+                    apellido: apellido,
+                    email: correo,
+                    estado: true
+                }).then(result => {
+                    res.redirect("/admin/ciudadanos")
+                }).catch(err => {
+                    console.log(err);
+                });
+            }
+
+        }).catch(err=>{
+            console.log(err)
+        })
+
+    }).catch(err=>{
+        console.log(err)
+    })
 };
 
 exports.PostActualizarCiudadanos = (req, res, next) => {

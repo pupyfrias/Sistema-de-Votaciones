@@ -1,10 +1,20 @@
 <main class="m-5">
 {{#if isAuthenticated}}  
     {{#if (comparar notPuestos normal)}}
-    <h1>No hay Puesto Disponible</h1>
+    <div class="alert alert-danger alert-dismissible fade show {{#if activeHome}}ms{{/if}}" role="alert">
+        <ul>
+            <li>No hay Puesto Disponible</li>
+        </ul>  
+        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+    </div>  
     {{else}}
     {{#if (comparar notPartidos normal)}}
-    <h1>No hay Partidos Disponible</h1>
+     <div class="alert alert-danger alert-dismissible fade show {{#if activeHome}}ms{{/if}}" role="alert">
+        <ul>
+            <li>No hay Partidos Disponible</li>
+        </ul>  
+        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+    </div>  
     {{else}}
     <div class="row">
         <div class="col-md-4"></div>
@@ -88,6 +98,11 @@
     {{/if}}
     {{/if}}
     {{else}}
-    <h2>No está Autorizado para visualizar esta Página</h2>
+    <div class="alert alert-danger alert-dismissible fade show {{#if activeHome}}ms{{/if}}" role="alert">
+        <ul>
+            <li>No está Autorizado para visualizar esta Página</li>
+        </ul>  
+        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+    </div>  
     {{/if}}
 </main>

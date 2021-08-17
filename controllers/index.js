@@ -5,6 +5,8 @@ const elecciones = require('../models/elecciones');
 const ciudadanos = require('../models/ciudadanos');
 const votos = require('../models/votos');
 const {Op} = require('sequelize');
+const nodemailer = require('nodemailer');
+
 
 let puestoArray = null;
 let hasEleccion = 0;
@@ -15,6 +17,18 @@ let fechaEleccion = null;
 let enlaces = null;
 let idEleccion = null;
 let votosArray = [];
+
+
+
+const transporter = nodemailer.createTransport({
+    service: "gmail",
+    auth: {
+      user: "phpitladiplomado@gmail.com",
+      pass: "#Querty123",
+    },
+  });
+
+
 
 //ELECCIÓN
 
@@ -158,7 +172,12 @@ exports.GetRegidor = (req, res, next)=>{
 
 
 exports.GetEleccion =(req,res,next)=>{
-
+    
+    
+    req.flash(
+        "errors",
+        "No hay Elecciones"
+      );
         res.render("eleccion/eleccion", {
             pageTitle: "Eleccion",
             activeHome: true,
@@ -252,19 +271,46 @@ exports.PostEleccion = (req, res, next) => {
 
                             }
                                                          
-                                
-                            res.render("eleccion/eleccion", {
-                                pageTitle: "Eleccion",
-                                activeHome: true,
-                                puestos: puestoArray[0],
-                                hasEleccion: hasEleccion,
-                                inabilited: ciudadanoData.estado,
-                                hasvoted: hasvoted,
-                                nombre: nombreEleccion,
-                                fecha: fechaEleccion,
-                                isVoting: canVoted
+                            
+                            if(hasEleccion==false){
 
-                            })
+
+                                req.flash(
+                                    "errors",
+                                    "No hay Elecciones"
+                                  );
+                                  return res.redirect("/");
+                            }
+                            else if(hasvoted){
+
+                                req.flash(
+                                    "errors",
+                                    "Ya has participado en estas elecciones"
+                                  );
+                                  return res.redirect("/");
+
+                            }
+                            else if(ciudadanoData.estado ==false){
+
+                                req.flash(
+                                    "errors",
+                                    "Estás inhabilitado"
+                                  );
+                                  return res.redirect("/");
+                            }
+                            else{
+
+                                res.render("eleccion/eleccion", {
+                                    pageTitle: "Eleccion",
+                                    activeHome: true,
+                                    puestos: puestoArray[0],
+                                    nombre: nombreEleccion,
+                                    fecha: fechaEleccion
+                                })
+                            }
+                               
+                            
+                            
 
                         }).catch(err=>{
                             console.log(err)
@@ -284,13 +330,11 @@ exports.PostEleccion = (req, res, next) => {
 
         else{
 
-            res.render("auth/index",{
-                pageTitle: "Sistema de Elecciones",
-                activeHome: true,
-                activeE: true,
-                error: true,
-                cedula:cedula        
-            }) 
+            req.flash(
+                "errors",
+                "Cédula incorrecta"
+              );
+              return res.redirect("/");
         }
     }).catch(err=>{
         console.log(err)
@@ -299,8 +343,10 @@ exports.PostEleccion = (req, res, next) => {
 
 exports.PostElegido = (req, res, next)=> {
 
+    const userId = req.session.userId;
+    let info = "";
     
-    votosArray.push((`${idEleccion},${ req.session.userId},`+req.body.datosCandidato).split(','))
+    votosArray.push((`${idEleccion},${userId },`+req.body.datosCandidato).split(','))
     if(enlaces === null){
 
         enlaces = req.body.enlaces.split(',')
@@ -323,17 +369,65 @@ exports.PostElegido = (req, res, next)=> {
                     console.log(err)
                 });
 
+            candidatos.findOne({where:{id:element[2]},
+                include:[{model:partidos},{model:puestos}]}).then(result=>{
+
+                    result = result.dataValues;
+
+                    const candidato = result.nombre+" "+result.apellido;
+                    const puesto = result.puesto_electivo.dataValues.nombre;
+                    const partido = result.partido.dataValues.nombre;
+                    
+                    info +=`<h3>Para ${puesto}</h3>
+                    <p>${candidato} del partido ${partido}</p>` 
+
+                }).catch(err=>{
+                    console.log(err)
+                });
+
         })
 
-          
+        ciudadanos.findOne({where:{id: userId}}).then(result=>{
+
+            result = result.dataValues
+            const correo = result.email;
+            const nombre = result.nombre+" "+result.apellido;
+  
+            
+            transporter.sendMail({
+                from: "phpitladiplomado@gmail.com",
+                to: `${correo}`,
+                subject: `Elección ${nombre}`,
+                html: info,
+                })
+
+            }).catch(err=>{
+                console.log(err)
+            });
+            
+            
+            
+                
 
         enlaces = null;
         idEleccion = null;
         votosArray = []
-
-        req.session.destroy(err=>{
+        
+            const text = "Proceso ejecutado con perfección. En breve recibirás un correo electrónico"+
+            " con tu elección"
+        
+          
+           req.session.destroy(err=>{
             console.log(err);
-            res.redirect('/');
+            
+            res.render("auth/index",{
+                pageTitle: "Sistema de Elecciones",
+                activeHome: true,
+                activeE: true,
+                hasInfo: true,
+                info: text     
+            });
+            
         })
        
     }else{

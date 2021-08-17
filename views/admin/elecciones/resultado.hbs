@@ -34,6 +34,11 @@
     </div>
     {{/each}}
     {{else}}
-    <h2>No está Autorizado para visualizar esta Página</h2>
+    <div class="alert alert-danger alert-dismissible fade show {{#if activeHome}}ms{{/if}}" role="alert">
+        <ul>
+            <li>No está Autorizado para visualizar esta Página</li>
+        </ul>  
+        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+    </div>  
     {{/if}}
 </main>

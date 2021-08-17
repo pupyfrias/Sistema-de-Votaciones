@@ -1,6 +1,5 @@
 <main class="m-5">
     {{#if isAuthenticated}}
-    {{#if hasCiudadanos}}
     <div class="row row-cols-md-4">
         {{#each ciudadanos}}
         <div class="col pt-3">
@@ -21,11 +20,7 @@
         </div>
         {{/each}}
     </div>
-    {{else}}
-    <h1>No Hay Ciudadanos Disponibles</h1>
-    {{/if}}
-
-
+  
 
 
 
@@ -33,6 +28,11 @@
     <a href="/admin/agregar-ciudadanos"><img src="../../assets/images/add.png" alt="" width="100px"
             class="add editar" data-eleccion={{#if eleccion}} "true"{{else}}"false" {{/if}}></a>
     {{else}}
-    <h2>No está Autorizado para visualizar esta Página</h2>
+    <div class="alert alert-danger alert-dismissible fade show {{#if activeHome}}ms{{/if}}" role="alert">
+        <ul>
+            <li>No está Autorizado para visualizar esta Página</li>
+        </ul>  
+        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+    </div>  
     {{/if}}
 </main>

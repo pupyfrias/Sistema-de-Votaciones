@@ -69,3 +69,9 @@ main ul li a{
     right: 40px;
     bottom: 40px;
 }
+
+.ms{
+    display: inline-flex;
+    width: 50%;
+}
+

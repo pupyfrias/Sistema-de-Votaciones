@@ -6,6 +6,7 @@ const multer =require('multer');
 const {v4:uuidv4} = require("uuid");
 const comparar =  require("./util/helpers/comparar");
 const session = require('express-session');
+const flash = require("connect-flash");
 
 //MODELS
 const sequelize =  require("./util/database");
@@ -55,14 +56,29 @@ app.use(express.urlencoded({extended:false}))
 app.use(multer({storage: fileStorage}).single("logo"));
 app.use(express.static(path.join(__dirname,"public")))
 app.use("/images",express.static(path.join(__dirname,"images")))
-
+app.use(flash());
 
 //MIDLEWARE
 
-app.use((req,res,next)=>{
+// app.use((req,res,next)=>{
+//     res.locals.isAuthenticated = req.session.isLoggedIn;
+    
+//     const errors = req.flash("errors");  
+//     res.locals.errorMessages = errors;
+//     res.locals.hasErrorMessages = errors.length > 0;
+//     next()
+// });
+
+app.use((req, res, next) => {
+    const errors = req.flash("errors");  
     res.locals.isAuthenticated = req.session.isLoggedIn;
-    next()
-})
+    res.locals.errorMessages = errors;
+    res.locals.hasErrorMessages = errors.length > 0;
+   
+    next();
+  });
+
+
 app.use(auth)
 app.use(index);
 app.use("/admin",admin);

@@ -1,4 +1,13 @@
 <main class="m-5">
+     {{#if error}}
+    <div class="alert alert-danger alert-dismissible fade show {{#if activeHome}}ms{{/if}}" role="alert">
+        <ul>
+            {{#if errorEmail}}<li>Este correo ya está registrado </li>{{/if}}
+            {{#if errorCedula}}<li>Esta cédula ya está registrado</li>{{/if}}
+        </ul>  
+        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+    </div>  
+    {{/if}}
     {{#if isAuthenticated}}
     <div class="row">
         <div class="col-md-4"></div>
@@ -9,23 +18,23 @@
                     {{else}}"/admin/guardar-ciudadanos"{{/if}} method="POST">
                     <div class="mb-3">
                         <label for="ceduala" class="form-label">Cédula</label>
-                        <input type="text" class="form-control" name="cedula" id="cedula" {{#if editMode}}value="{{ciudadanos.cedula}}"
-                            {{/if}}>
+                        <input type="text" class="form-control {{#if errorCedula}} border-danger{{/if}}" name="cedula" id="cedula" {{#if editMode}}disabled value="{{ciudadanos.cedula}}"
+                            {{/if}} {{#if error}} value="{{cedula}}"{{/if}}>
                     </div>
                     <div class="mb-3">
                         <label for="nombre" class="form-label">Nombre</label>
                         <input type="text" class="form-control" name="nombre" id="nombre" {{#if editMode}}value="{{ciudadanos.nombre}}"
-                            {{/if}}>
+                            {{/if}}{{#if error}} value="{{nombre}}"{{/if}}>
                     </div>
                     <div class="mb-3">
                         <label for="apellido" class="form-label">Apellido</label>
                         <input type="text" class="form-control" name="apellido" id="apellido" {{#if editMode}}value="{{ciudadanos.apellido}}"
-                            {{/if}}>
+                            {{/if}} {{#if error}} value="{{apellido}}"{{/if}}>
                     </div>
                     <div class="mb-3">
                         <label for="correo" class="form-label">Correo</label>
-                        <input type="email" class="form-control" name="correo" id="correo" {{#if editMode}}value="{{ciudadanos.email}}"
-                            {{/if}}>
+                        <input type="email" class="form-control{{#if errorEmail}} border-danger{{/if}}" name="correo" id="correo" {{#if editMode}}disabled value="{{ciudadanos.email}}"
+                            {{/if}} {{#if error}} value="{{correo}}"{{/if}}>
                     </div>
 
                    
@@ -49,6 +58,11 @@
         <div class="col-md-4"></div>
     </div>
     {{else}}
-    <h2>No está Autorizado para visualizar esta Página</h2>
+    <div class="alert alert-danger alert-dismissible fade show {{#if activeHome}}ms{{/if}}" role="alert">
+        <ul>
+            <li>No está Autorizado para visualizar esta Página</li>
+        </ul>  
+        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+    </div>  
     {{/if}}
 </main>

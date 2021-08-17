@@ -43,6 +43,44 @@ $(document).ready(function () {
         }
     })
 
+    $('#admin-iniciar').on('click',function(){
+
+        
+        const usuario = $('#usuario');
+        const contraseña = $('#contraseña');
+
+        isVatidate =true;
+        event.preventDefault()
+
+        if(contraseña.val()==""||contraseña.val()==null||contraseña.val()==undefined){
+
+            $(contraseña).addClass('border-danger');
+            contraseña.focus()
+            isVatidate = false
+        }
+        else{
+            $(contraseña).removeClass('border-danger');
+        }
+        
+        if(usuario.val()==""||usuario.val()==null||usuario.val()==undefined){
+
+            $(usuario).addClass('border-danger');
+            usuario.focus()
+            isVatidate = false
+        }
+        else{
+            $(usuario).removeClass('border-danger');
+        }
+
+        
+    
+    
+        if(isVatidate){
+            $('#admin-iniciar').parents().submit();
+        }
+    
+    })
+
     $('#siguiente').on('click',function(){
 
         event.preventDefault();

@@ -4,9 +4,6 @@
 //GET
 exports.GetIndex = (req, res, next) => {
 
-    console.log(req.session.userId)
-    console.log(req.session.Id)
-    console.log("")
     
     if(req.session.isLoggedIn){
        return res.redirect('/admin/home');
@@ -30,14 +27,44 @@ exports.GetAdmin = (req, res, next) => {
         activeAdmin: true,
         iniciarSesionAdmin: true
     })
+    
 };
 
 //POST
 
 exports.PostAdminAuth = (req, res, next) => {
     
-    req.session.isLoggedIn = true;
-    res.redirect('/admin/home')
+    const usuario = req.body.usuario;
+    const contraseña = req.body.contraseña;
+
+    if(usuario!= "admin" && contraseña!="admin"){
+        req.flash(
+            "errors",
+            "Usuario y Contraseña Incorrecto"
+          );
+        return res.redirect("/admin/iniciar-sesion");
+    }
+    else if(contraseña!="admin"){
+        req.flash(
+            "errors",
+            "Contraseña Incorrecto"
+          );
+        return res.redirect("/admin/iniciar-sesion");
+    }
+    else if(usuario!= "admin"){
+
+        req.flash(
+            "errors",
+            "Contraseña Incorrecto"
+          );
+        return res.redirect("/admin/iniciar-sesion");
+    }
+    else{
+
+        req.session.isLoggedIn = true;
+        return res.redirect('/admin/home') 
+    }
+   
 };
 
 exports.PostLogout = (req, res, next)=>{
