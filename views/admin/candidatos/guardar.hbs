@@ -1,0 +1,93 @@
+<main class="m-5">
+{{#if isAuthenticated}}  
+    {{#if (comparar notPuestos normal)}}
+    <h1>No hay Puesto Disponible</h1>
+    {{else}}
+    {{#if (comparar notPartidos normal)}}
+    <h1>No hay Partidos Disponible</h1>
+    {{else}}
+    <div class="row">
+        <div class="col-md-4"></div>
+        <div class="col-md-4">
+            <div class="card">
+                <div class="card-header bg-primary text-white">Candidtos</div>
+                <form enctype="multipart/form-data" class="m-4" action={{#if editMode}} "/admin/actualizar-candidatos"
+                    {{else}}"/admin/guardar-candidatos"{{/if}} method="POST">
+
+                    <div class="mb-3">
+                        <label for="nombre" class="form-label">Nombre</label>
+                        <input type="text" class="form-control" name="nombre" id="nombre" {{#if
+                            editMode}}value="{{candidatos.nombre}}" {{/if}}>
+                    </div>
+                    <div class="mb-3">
+                        <label for="apellido" class="form-label">Apellido</label>
+                        <input type="text" class="form-control" name="apellido" id="apellido" {{#if
+                            editMode}}value="{{candidatos.apellido}}" {{/if}}>
+                    </div>
+
+                    <div class="mb-3">
+                        <label for="partido" class="form-label">Partido</label>
+                        <select class="form-select" name="partido" id="partido" data-disabled={{#if disabledPartido}}"true"{{else}}"false"{{/if}}>
+                            <option {{#if editMode}}{{else}}selected{{/if}}>Seleccine una opción</option>
+                            {{#each partidos}}
+
+                            {{#if (comparar this.id ../candidatos.partidoId)}}
+                                <option value="{{this.id}}" selected>{{this.nombre}}</option>
+                            {{else}}
+                                <option value="{{this.id}}">{{this.nombre}}</option>
+                           {{/if}}
+
+                            {{/each}}
+                        </select>
+                    </div>
+
+                   <div class="mb-3">
+                        <label for="puesto" class="form-label">Puesto</label>
+                        <select class="form-select" name="puesto" id="puesto" data-disabled={{#if disabledPuesto}}"true"{{else}}"false"{{/if}}>
+                            <option {{#if editMode}}{{else}}selected{{/if}}>Seleccine una opción</option>
+                            {{#each puestos}}
+                                <h1>{{this.id}}</h1>
+                            {{#if (comparar this.id ../candidatos.puestoElectivoId)}}
+                                <option value="{{this.id}}" selected>{{this.nombre}}</option>
+                            {{else}}
+                                <option value="{{this.id}}">{{this.nombre}}</option>
+                           {{/if}}
+
+                            {{/each}}
+                        </select>
+                    </div>
+
+
+
+                    <div class="mb-3">
+                        <label for="logo" class="form-label">Foto</label>
+                        <input type="file" class="form-control" name="logo" id="logo" data-logo={{#if editMode}}"edit"{{else}}"normal"{{/if}}>
+
+                    </div>
+                
+
+                    {{#if editMode}}
+                    <div class="mb-3">
+                        <label for="estado" class="form-label">Estado</label>
+                        <select class="form-select" aria-label="Default select example" name="estado" id="estado">
+                            <option value="false">No está Disponible</option>
+                            <option value="true" {{#if candidatos.estado}} selected{{/if}}>Disponible</option>
+                            
+                        </select>
+                    </div>
+                    <input type="hidden" name="id" value="{{candidatos.id}}">
+                    {{/if}}
+
+                    <button type="submit"  class="btn btn-primary" id="candidatos"> {{#if
+                        editMode}} Actualizar{{else}}Guardar{{/if}}</button>
+                </form>
+            </div>
+        </div>
+        <div class="col-md-4"></div>
+    </div>
+    {{/if}}
+    {{/if}}
+    {{else}}
+    <h2>No está Autorizado para visualizar esta Página</h2>
+    {{/if}}
+</main>

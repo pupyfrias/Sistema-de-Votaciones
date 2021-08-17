@@ -1,0 +1,71 @@
+.add {
+    position: fixed;
+    bottom: 20px;
+    right: 20px;
+}
+
+.fl {
+    float: left;
+    margin-right: 10px;
+}
+
+.radio {
+    position: absolute;
+    bottom: 10px;
+    right: 10px;
+}
+
+.card-470 {
+    min-height: 470px;
+}
+
+.img-fill {
+    width: 100%;
+    height: 270px;
+    object-fit: cover;
+}
+
+.img-min-fill {
+    width: 50px;
+    height: 50px;
+    object-fit: cover;
+}
+
+.green-circle, .red-circle {
+
+    display: inline-block;
+    width: 10px;
+    height: 10px;
+    border-radius: 5px;
+    
+}
+
+.green-circle{
+
+    background-color: green;
+}
+
+.red-circle{
+
+    background-color: red;
+}
+
+.logout{
+    position: absolute;
+    right: 20px;
+    top: 14px;
+}
+
+main ul li a{
+    color: black;
+}
+
+.nav-tabs .nav-item.show .nav-link, .nav-tabs .nav-link.active{
+    color: #0075FF !important;
+}
+
+.siguiente{
+    position: fixed;
+    right: 40px;
+    bottom: 40px;
+}

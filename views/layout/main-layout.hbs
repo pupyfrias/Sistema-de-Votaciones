@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="../../assets/css/style.css">
+    <link rel="stylesheet" href="../../assets/css/bootstrap/bootstrap.min.css">
+    {{#if activeAdmin}}
+    <link rel="stylesheet" href="../../assets/css/admin/home.css">{{/if}}
+    {{#if activeE}}
+    <link rel="stylesheet" href="../../assets/css/admin/home.css">{{/if}}
+    <title>{{pageTitle}}</title>
+</head>
+
+<body {{#if activeAdmin}}class="text-center" {{/if}}{{#if activeE}}class="text-center" {{/if}}>
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+        <div class="container-fluid">
+
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav">
+                    {{#if isAuthenticated}}
+                    <li class="nav-item">
+                        <a class="nav-link  {{#if activeAdmin}}active{{/if}}" href="/admin/home">Home</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link  {{#if activeCandidatos}}active{{/if}}"
+                            href="/admin/candidatos">Candidatos</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link  {{#if activePartidos}}active{{/if}}" href="/admin/partidos">Partidos</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link  {{#if activePuesto}}active{{/if}}" href="/admin/puestos-electivos">Puestos
+                            Electivos</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link  {{#if activeCiudadanos}}active{{/if}}"
+                            href="/admin/ciudadanos">Ciudadanos</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link  {{#if activeElecciones}}active{{/if}}"
+                            href="/admin/elecciones">Elecciones</a>
+                    </li>
+
+                    <li class="nav-item logout">
+                        <form action="/admin/logout" method="post">
+                            <button type="submit" class="bg-dark btn text-white">Logout</button>
+                        </form>
+                    </li>
+
+                    {{else}}
+                    <li class="nav-item">
+                        <a class="nav-link {{#if activeHome}}active{{/if}}" href="/">Home</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link  {{#if activeAdmin}}active{{/if}}" href="/admin/iniciar-sesion">Admin</a>
+                    </li>
+                    {{/if}}
+
+                    {{#if isVoting}}
+                    <li class="nav-item logout">
+                        <form action="/admin/logout" method="post">
+                            <button type="submit" class="bg-dark btn text-white">Logout</button>
+                        </form>
+                    </li>
+                    {{/if}}
+
+
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    {{{body}}}
+</body>
+<script src="../../assets/js/jquery/jquery-3.6.0.min.js"></script>
+<script src="../../assets/js/index.js"></script>
+{{#if activeCandidatos}}
+<script src="../../assets/js/candidatos/candidatos.js"></script>{{/if}}
+{{#if activePuesto}}
+<script src="../../assets/js/puestos/puestos.js"></script>{{/if}}
+{{#if activePartidos}}
+<script src="../../assets/js/partidos/partidos.js"></script>{{/if}}
+{{#if activeCiudadanos}}
+<script src="../../assets/js/ciudadanos/ciudadanos.js"></script>{{/if}}
+
+
+</html>

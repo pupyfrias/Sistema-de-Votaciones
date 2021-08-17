@@ -1,0 +1,49 @@
+<main class="m-5">
+    {{#if isAuthenticated}}
+    <div class="row">
+        <div class="col-md-4"></div>
+        <div class="col-md-4">
+            <div class="card">
+                <div class="card-header bg-primary text-white">Partidos</div>
+                <form enctype="multipart/form-data" class="m-4" action={{#if editMode}} "/admin/actualizar-partidos"
+                    {{else}}"/admin/guardar-partidos"{{/if}} method="POST">
+                    
+                    <div class="mb-3">
+                        <label for="nombre" class="form-label">Nombre</label>
+                        <input type="text" class="form-control" name="nombre" id="nombre" {{#if editMode}}value="{{partidos.nombre}}"
+                            {{/if}}>
+                    </div>
+                    <div class="mb-3">
+                        <label for="descripcion" class="form-label">Descripcion</label>
+                        <input type="text" class="form-control" name="descripcion" id="descripcion" {{#if editMode}}value="{{partidos.descripcion}}"
+                            {{/if}}>
+                    </div>
+                    <div class="mb-3">
+                        <label for="logo" class="form-label">Logo</label>
+                        <input type="file" class="form-control" name="logo" id="logo" data-logo={{#if editMode}}"edit"{{else}}"normal"{{/if}}>
+                    </div>
+
+                   
+                    {{#if editMode}}
+                    <div class="mb-3">
+                        <label for="estado" class="form-label">Estado</label>
+                        <select class="form-select" aria-label="Default select example" name="estado" id="estado">
+                            <option value="false">No está Disponible</option> 
+                            <option value="true" {{#if partidos.estado}} selected{{/if}}>Disponible</option>
+                                                    
+                        </select>
+                    </div>
+                    <input type="hidden" name="id" value="{{partidos.id}}">
+                    {{/if}}
+
+                    <button type="submit" class="btn btn-primary" id="partidos"> {{#if
+                        editMode}}Actualizar{{else}}Guardar{{/if}}</button>
+                </form>
+            </div>
+        </div> 
+        <div class="col-md-4"></div>
+    </div>
+    {{else}}
+    <h2>No está Autorizado para visualizar esta Página</h2>
+    {{/if}}
+</main>

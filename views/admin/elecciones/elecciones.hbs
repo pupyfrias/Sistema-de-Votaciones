@@ -1,0 +1,50 @@
+<main class="m-5">
+    {{#if isAuthenticated}}
+    {{#if hasElecciones}}
+    <div class="row row-cols-md-4">
+        {{#each elecciones}}
+        <div class="col pt-3">
+            <div class="card">
+
+                <div class="card-body">
+                    <p class="card-text">
+
+                        <span id="nombre"><strong>Nombre: </strong>{{this.nombre}}</span><br>
+                        <span id="nombre"><strong>Fecha: </strong>{{this.fecha}}</span><br>
+                        <span id="estado"><strong>Estado: </strong>{{#if
+                            this.estado}}Activa{{else}}Finalizado{{/if}}</span>
+
+                    </p>
+                    {{#if this.estado}}
+                    <form action="/admin/actualizar-elecciones" method="post">
+                        <input type="hidden" name="id" value="{{this.id}}">
+                        <button type="submit" name="estado" class="btn btn-danger fl">Finalizar</button>
+                    </form>
+                    {{else}}
+                    <a href="/admin/resultado-elecciones/{{this.id}}" class="btn btn-primary fl">Resultado</a>
+                    {{/if}}
+
+
+                </div>
+            </div>
+        </div>
+        {{/each}}
+
+    </div>
+    {{else}}
+        {{#if hasCiudadanos}}
+         <h1>No hay Elecciones Realizadas</h1>
+        
+        {{else}}
+          <h1>No hay Ciudadanos Registrado</h1> 
+        {{/if}}
+        
+    {{/if}}
+    {{#if activeAdd}}
+    <a href="/admin/agregar-elecciones"><img src="../../assets/images/add.png" alt="" width="100px" class="add"></a>
+    {{/if}}
+
+{{else}}
+    <h2>No está Autorizado para visualizar esta Página</h2>
+{{/if}}
+</main>

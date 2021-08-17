@@ -1,0 +1,15 @@
+<main class="form-signin mt-5">
+
+    <form action="/eleccion" method="POST">
+        <h1 class="h3 mb-3 fw-normal">Elecciones</h1>
+        <div class="form-floating">
+            <input type="text" class="form-control {{#if error}}border-danger{{/if}}" id="cedulaIndex" name="cedulaIndex" {{#if error}}value="{{cedula}}"{{/if}}>
+            <label for="cedulaIndex">Cédula</label>
+
+        </div>
+        {{#if error}}<label class="text-danger d-flex">Cédula Incorrecta</label>{{/if}}
+        <div class="checkbox mb-3">
+        </div>
+        <button class="w-100 btn btn-lg btn-primary" type="submit" id="iniciarEleccion">Iniciar Sesión</button>
+    </form>
+</main>

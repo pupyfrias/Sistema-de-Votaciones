@@ -1,0 +1,38 @@
+<main class="m-5">
+    {{#if isAuthenticated}}
+    {{#if hasCandidatos}}
+    <div class="row row-cols-md-4">
+        {{#each candidatos}}
+        <div class="col pt-3">
+            <div class="card card-470">
+
+                <div class="card-body">
+                    <img src="{{this.foto}}" alt="" class="img-fill mb-3">
+
+                    <p class="card-text">
+                        <span id="nombre"><strong>Nombre: </strong>{{this.nombre}}</span><br>
+                        <span id="apellido"><strong>Apellido: </strong>{{this.apellido}}</span><br>
+                        <span id="partido"><strong>Partido: </strong>{{this.partido.dataValues.nombre}}</span><br>
+                        <span id="puesto"><strong>Puesto: </strong>{{this.puesto_electivo.dataValues.nombre}}</span><br>
+                        <span id="estado"><strong>Estado: </strong>{{#if this.estado}}Disponible <span
+                                class="green-circle"> </span>{{else}}No está
+                            Disponible <span class="red-circle"></span>{{/if}}</span>
+                    </p>
+                    <a href="/admin/editar-candidatos/{{this.id}}?edit=true" class="btn btn-primary fl editar"
+                        data-eleccion={{#if ../eleccion}} "true" {{else}}"false" {{/if}}>Editar</a>
+                </div>
+            </div>
+        </div>
+        {{/each}}
+    </div>
+    {{else}}
+    <h1>No Hay Candidatos Disponibles</h1>
+    {{/if}}
+
+
+    <a href="/admin/agregar-candidatos"><img src="../../assets/images/add.png" alt="" width="100px" class="add editar"
+            data-eleccion={{#if eleccion}} "true" {{else}}"false" {{/if}}></a>
+    {{else}}
+    <h2>No está Autorizado para visualizar esta Página</h2>
+    {{/if}}
+</main>

@@ -1,0 +1,39 @@
+<main class="m-5">
+    {{#if isAuthenticated}}
+
+    {{#each datos}}
+    <div class="card">
+        <div class="card-header">{{@key}}</div>
+        <div class="card-body">
+            <div class="row row-cols-md-4">
+                {{#each this}}
+                <div class="col pt-3">
+                    <div class="card">
+                        <div class="card-body">
+
+                            <img src="{{this.[4]}}" alt="" class="img-fill mb-3">
+                            <p class="card-text">
+                                <span></span> <strong>Nombre: </strong> {{this.[2]}}</span><br>
+                                <span ><strong>Apellido: </strong> {{this.[3]}}</span><br>
+                                <span ><strong>Partido: </strong> {{this.[6]}}</span><br>
+                                <span ><strong>Votos: </strong> {{this.[0]}} </span><br>
+                                <span id="puesto"><strong>Porcentaje:</strong> {{this.[7]}}% </span><br>
+                            </p>
+                            <div>
+                                <img src="{{this.[5]}}" alt="" class="img-min-fill">
+                            </div>
+
+
+
+                        </div>
+                    </div>
+                </div>
+                {{/each}}
+            </div>
+        </div>
+    </div>
+    {{/each}}
+    {{else}}
+    <h2>No está Autorizado para visualizar esta Página</h2>
+    {{/if}}
+</main>

@@ -1,0 +1,32 @@
+<main class="m-4">
+    {{#if inabilited}}
+    {{#if hasvoted}}
+    <h2>Ya ha votado en estas Elecciones</h2>
+
+    {{else}}
+    {{#if hasEleccion}}
+    
+
+    <div class="text-center mt-5">
+        
+        <h2>Bienveinido a al Elección {{nombre}}</h2>
+        <h3>{{fecha}}</h3>
+        <img src="../../assets/images/img.png" width="40%">
+        <div class="mt-3">
+            <a href="/eleccion/{{puestos.nombre}}" class="btn btn-primary">Iniciar Votación</a>
+            <form action="/admin/logout" method="post">
+            <button  class="btn btn-danger mt-3"type="submit">Cerrar Sección</button>
+            </form>
+        </div>
+        
+    </div>
+    {{else}}
+    <h2>No hay Elección Activa</h2>
+    {{/if}}
+    {{/if}}
+    {{else}}
+    <h2>Estás inhabilitado</h2>
+
+
+    {{/if}}
+</main>

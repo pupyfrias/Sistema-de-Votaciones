@@ -1,0 +1,54 @@
+<main class="m-5">
+    {{#if isAuthenticated}}
+    <div class="row">
+        <div class="col-md-4"></div>
+        <div class="col-md-4">
+            <div class="card">
+                <div class="card-header bg-primary text-white">Ciudadanos</div>
+                <form class="m-4" action={{#if editMode}} "/admin/actualizar-ciudadanos"
+                    {{else}}"/admin/guardar-ciudadanos"{{/if}} method="POST">
+                    <div class="mb-3">
+                        <label for="ceduala" class="form-label">Cédula</label>
+                        <input type="text" class="form-control" name="cedula" id="cedula" {{#if editMode}}value="{{ciudadanos.cedula}}"
+                            {{/if}}>
+                    </div>
+                    <div class="mb-3">
+                        <label for="nombre" class="form-label">Nombre</label>
+                        <input type="text" class="form-control" name="nombre" id="nombre" {{#if editMode}}value="{{ciudadanos.nombre}}"
+                            {{/if}}>
+                    </div>
+                    <div class="mb-3">
+                        <label for="apellido" class="form-label">Apellido</label>
+                        <input type="text" class="form-control" name="apellido" id="apellido" {{#if editMode}}value="{{ciudadanos.apellido}}"
+                            {{/if}}>
+                    </div>
+                    <div class="mb-3">
+                        <label for="correo" class="form-label">Correo</label>
+                        <input type="email" class="form-control" name="correo" id="correo" {{#if editMode}}value="{{ciudadanos.email}}"
+                            {{/if}}>
+                    </div>
+
+                   
+                    {{#if editMode}}
+                    <div class="mb-3">
+                        <label for="estado" class="form-label">Estado</label>
+                        <select class="form-select" aria-label="Default select example" name="estado" id="estado">
+                            <option value="false">No está Disponible</option> 
+                            <option value="true" {{#if ciudadanos.estado}} selected{{/if}}>Disponible</option>
+                                                    
+                        </select>
+                    </div>
+                    <input type="hidden" name="id" value="{{ciudadanos.id}}">
+                    {{/if}}
+
+                    <button type="submit" class="btn btn-primary" id="ciudadanos"> {{#if
+                        editMode}}Actualizar{{else}}Guardar{{/if}}</button>
+                </form>
+            </div>
+        </div>
+        <div class="col-md-4"></div>
+    </div>
+    {{else}}
+    <h2>No está Autorizado para visualizar esta Página</h2>
+    {{/if}}
+</main>

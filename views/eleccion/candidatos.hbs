@@ -1,0 +1,57 @@
+<main class="m-4">
+
+    <ul class="nav nav-tabs">
+        {{#each puestos}}
+        <li class="nav-item">
+            <a class="nav-link 
+            {{#if (comparar ../activePresidente this.nombre)}}active{{/if}}
+            {{#if (comparar ../activeSenador this.nombre)}}active{{/if}}
+            {{#if (comparar ../activeDiputado this.nombre)}}active{{/if}}
+            {{#if (comparar ../activeAlcalde this.nombre)}}active{{/if}}
+            {{#if (comparar ../activeRegidor this.nombre)}}active{{/if}}
+            " href="/eleccion/{{this.nombre}}">{{this.nombre}}</a>
+        </li>
+        {{/each}}
+
+    </ul>
+
+    <br>
+    <form action="/elegido" method="post">
+        <div class="row row-cols-md-4">
+            {{#each candidatos}}
+
+            {{#if this.partido.dataValues.estado}}
+            <div class="col pt-3">
+                <div class="card card-470">
+
+                    <div class="card-body">
+
+                        <img src="{{this.foto}}" alt="" class="img-fill mb-3">
+                        <p class="card-text">
+                            <span id="nombre"><strong>Nombre: </strong>{{this.nombre}}</span><br>
+                            <span id="apellido"><strong>Apellido: </strong>{{this.apellido}}</span><br>
+                            <span id="partido"><strong>Partido: </strong>{{this.partido.dataValues.nombre}}</span><br>
+                            <span id="puesto"><strong>Puesto:
+                                </strong>{{this.puesto_electivo.dataValues.nombre}}</span><br>
+                        </p>
+                        <div>
+                            <img src="{{this.partido.dataValues.logo}}" alt="" class="img-min-fill">
+                        </div>
+
+                        
+                        <input type="hidden" name="puesto" value="{{this.puesto_electivo.dataValues.id}}">
+                        <input class="radio" type="radio" name="datosCandidato" id="datosCandidato" 
+                        value="{{this.id}},{{this.partidoId}},{{this.puestoElectivoId}}">
+
+
+                    </div>
+                </div>
+            </div>
+            {{/if}}
+            {{/each}}
+        </div>
+       <input type="hidden" name="enlaces" value=" {{#each puestos}}{{this.nombre}},{{/each}}">
+        <button type="submit" id="siguiente" class="siguiente btn btn-primary">Siguiente</button>
+    </form>
+
+</main>

@@ -1,0 +1,60 @@
+<main class="m-5">
+    {{#if isAuthenticated}}
+    <div class="row">
+        <div class="col-md-4"></div>
+        <div class="col-md-4">
+            <div class="card">
+                <div class="card-header bg-primary text-white">Puestos Electivos</div>
+                <form class="m-4" action={{#if editMode}} "/admin/actualizar-puestos-electivos"
+                    {{else}}"/admin/guardar-puestos-electivos"{{/if}} method="POST">
+
+                    <div class="mb-3">
+                        <label for="nombre" class="form-label">Nombre</label>
+                        <select class="form-select" aria-label="Default select example" name="nombre" id="nombre">
+
+                            {{#if editMode}}
+                            
+                            <option value="Presidente" {{#if (comparar puesto.nombre "Presidente")}} selected{{/if}}>Presidente</option>
+                            <option value="Senador" {{#if (comparar puesto.nombre "Senador")}} selected{{/if}}>Senador</option>
+                            <option value="Diputado" {{#if (comparar puesto.nombre "Diputado")}} selected{{/if}}>Diputado</option>
+                            <option value="Regidor" {{#if (comparar puesto.nombre "Regidor")}} selected{{/if}}>Regidor</option>
+                            <option value="Alcalde" {{#if (comparar puesto.nombre "Alcalde")}} selected{{/if}}>Alcalde</option>
+
+                            {{else}}
+                            <option selected>Seleccione un opcion</option>
+                            <option value="Presidente">Presidente</option>
+                            <option value="Senador">Senador</option>
+                            <option value="Diputado">Diputado</option>
+                            <option value="Regidor">Regidor</option>
+                            <option value="Alcalde">Alcalde</option>
+                            {{/if}}
+                        </select>
+                    </div>
+                    <div class="mb-3">
+                        <label for="descripcion" class="form-label">Descripcion</label>
+                        <textarea class="form-control" id="descripcion" cols="3"
+                            name="descripcion">{{#if editMode}}{{puesto.descripcion}}{{/if}}</textarea>
+                    </div>
+                    {{#if editMode}}
+                    <div class="mb-3">
+                        <label for="estado" class="form-label">Estado</label>
+                        <select class="form-select" aria-label="Default select example" name="estado" id="estado">
+                            <option value="false">No está Disponible</option>
+                            <option value="true" {{#if puesto.estado}} selected{{/if}}>Disponible</option>
+
+                        </select>
+                    </div>
+                    <input type="hidden" name="id" value="{{puesto.id}}">
+                    {{/if}}
+
+                    <button type="submit" class="btn btn-primary" id="puestos"> {{#if
+                        editMode}}Actualizar{{else}}Guardar{{/if}}</button>
+                </form>
+            </div>
+        </div>
+        <div class="col-md-4"></div>
+    </div>
+    {{else}}
+    <h2>No está Autorizado para visualizar esta Página</h2>
+    {{/if}}
+</main>

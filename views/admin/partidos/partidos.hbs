@@ -1,0 +1,32 @@
+<main class="m-5">
+    {{#if isAuthenticated}}
+    {{#if hasPartidos}}
+    <div class="row row-cols-md-4">
+        {{#each partidos}}
+        <div class="col pt-3">
+            <div class="card">
+                
+                <div class="card-body card-470">
+                    <p class="card-text">
+                        <img src="{{this.logo}}" alt="" class="img-fill mb-3">
+                        <span id="nombre"><strong>Nombre: </strong>{{this.nombre}}</span><br>
+                        <span id="nombre"><strong>Descripcion: </strong>{{this.descripcion}}</span><br>
+                        <span id="estado"><strong>Estado: </strong>{{#if this.estado}}Disponible <span class="green-circle"></span>{{else}}No está Disponible <span class="red-circle"></span>{{/if}}</span>
+                    </p>
+                    <a href="/admin/editar-partidos/{{this.id}}?edit=true" class="btn btn-primary fl editar" data-eleccion={{#if ../eleccion}} "true"{{else}}"false" {{/if}}>Editar</a>
+                </div>
+            </div>
+        </div>
+        {{/each}}
+    </div>
+    {{else}}
+    <h1>No Hay Partidos Disponibles</h1>
+    {{/if}}
+
+
+    <a href="/admin/agregar-partidos"><img src="../../assets/images/add.png" alt="" width="100px"
+            class="add editar" data-eleccion={{#if eleccion}} "true"{{else}}"false" {{/if}}></a>
+{{else}}
+    <h2>No está Autorizado para visualizar esta Página</h2>
+    {{/if}}
+</main>

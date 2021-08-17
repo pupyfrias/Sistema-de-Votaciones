@@ -1,0 +1,54 @@
+<main class="m-5 text-center">
+    
+    {{#if isAuthenticated}}
+    <div class="row row-cols-1 row-cols-md-5 g-4 mt-5">
+        <div class="col">
+            <div class="card">
+                <a href="/admin/candidatos"><img src="../../assets/images/candidato.png" class="card-img-top" alt="..."></a>
+                <div class="card-body">
+                    <h5 class="card-title">Candidatos</h5>
+
+                </div>
+            </div>
+        </div>
+        <div class="col">
+            <div class="card">
+                <a href="/admin/partidos"><img src="../../assets/images/partidos.png" class="card-img-top" alt="..."></a>
+                <div class="card-body">
+                    <h5 class="card-title">Partidos</h5>
+                    <p class="card-text">
+                </div>
+            </div>
+        </div>
+        <div class="col">
+            <div class="card">
+                <a href="/admin/puestos-electivos"><img src="../../assets/images/puesto.png" class="card-img-top" alt="..."></a>
+                <div class="card-body">
+                    <h5 class="card-title">Puesto Electivos</h5>
+
+                </div>
+            </div>
+        </div>
+        <div class="col">
+            <div class="card">
+                <a href="/admin/ciudadanos"><img src="../../assets/images/ciudadanos.png" class="card-img-top" alt="..."></a>
+                <div class="card-body">
+                    <h5 class="card-title">Ciudadanos</h5>
+                </div>
+            </div>
+        </div>
+        <div class="col">
+            <div class="card">
+                <a href="/admin/elecciones"><img src="../../assets/images/elecciones.png" class="card-img-top" alt="..."></a>
+                <div class="card-body">
+                    <h5 class="card-title">Elecciones</h5>
+                </div>
+            </div>
+        </div>
+    </div>
+    </div>
+    {{else}}
+    <h2>No está Autorizado para visualizar esta Página</h2>
+    {{/if}}
+
+</main>
