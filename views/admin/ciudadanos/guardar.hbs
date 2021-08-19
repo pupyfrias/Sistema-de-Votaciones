@@ -1,6 +1,6 @@
 <main class="m-5">
      {{#if error}}
-    <div class="alert alert-danger alert-dismissible fade show {{#if activeHome}}ms{{/if}}" role="alert">
+    <div class="alert alert-danger alert-dismissible fade show d-flex" role="alert">
         <ul>
             {{#if errorEmail}}<li>Este correo ya está registrado </li>{{/if}}
             {{#if errorCedula}}<li>Esta cédula ya está registrado</li>{{/if}}
@@ -33,7 +33,7 @@
                     </div>
                     <div class="mb-3">
                         <label for="correo" class="form-label">Correo</label>
-                        <input type="email" class="form-control{{#if errorEmail}} border-danger{{/if}}" name="correo" id="correo" {{#if editMode}}disabled value="{{ciudadanos.email}}"
+                        <input type="email" class="form-control  {{#if errorEmail}} border-danger{{/if}}" name="correo" id="correo" {{#if editMode}}disabled value="{{ciudadanos.email}}"
                             {{/if}} {{#if error}} value="{{correo}}"{{/if}}>
                     </div>
 
@@ -52,13 +52,14 @@
 
                     <button type="submit" class="btn btn-primary" id="ciudadanos"> {{#if
                         editMode}}Actualizar{{else}}Guardar{{/if}}</button>
-                </form>
+                        <a href="/admin/ciudadanos/" class="btn btn-danger">Cancelar</a>
+                <input type="hidden" name="_csrf" value="{{csrfToken}}"></form>
             </div>
         </div>
         <div class="col-md-4"></div>
     </div>
     {{else}}
-    <div class="alert alert-danger alert-dismissible fade show {{#if activeHome}}ms{{/if}}" role="alert">
+    <div class="alert alert-danger alert-dismissible fade show d-flex" role="alert">
         <ul>
             <li>No está Autorizado para visualizar esta Página</li>
         </ul>  

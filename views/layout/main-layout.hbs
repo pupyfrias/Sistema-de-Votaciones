@@ -47,7 +47,7 @@
                     <li class="nav-item logout">
                         <form action="/admin/logout" method="post">
                             <button type="submit" class="bg-dark btn text-white">Logout</button>
-                        </form>
+                        <input type="hidden" name="_csrf" value="{{csrfToken}}"></form>
                     </li>
 
                     {{else}}
@@ -63,7 +63,7 @@
                     <li class="nav-item logout">
                         <form action="/admin/logout" method="post">
                             <button type="submit" class="bg-dark btn text-white">Logout</button>
-                        </form>
+                        <input type="hidden" name="_csrf" value="{{csrfToken}}"></form>
                     </li>
                     {{/if}}
 
@@ -74,7 +74,7 @@
     </nav>
  {{#if hasErrorMessages}} 
 
-    <div class="alert alert-danger alert-dismissible fade show " role="alert">
+    <div class="alert alert-danger alert-dismissible fade show m-5 d-flex" role="alert">
         <ul>
           {{#each errorMessages}}
             <li>{{this}}</li>
@@ -85,7 +85,7 @@
 {{/if}}
 
  {{#if hasInfo}} 
-    <div class="alert alert-success alert-dismissible fade show " role="alert">
+    <div class="alert alert-success alert-dismissible fade show m-5 d-flex" role="alert">
         <ul>
             <li>{{info}}</li>
         </ul>  

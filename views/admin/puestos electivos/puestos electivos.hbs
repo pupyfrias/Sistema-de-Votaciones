@@ -1,6 +1,13 @@
 <main class="m-5">
     {{#if isAuthenticated}}
-  
+    {{#if empty}}
+        <div class="alert alert-danger alert-dismissible fade show " role="alert">
+            <ul>
+                <li>No hay puestos registrados</li>
+            </ul>  
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+        </div>   
+        {{/if}}
     <div class="row row-cols-md-5">
         {{#each puestos}}
         <div class="col pt-3">
@@ -23,7 +30,7 @@
     <a href="/admin/agrgar-puestos-electivos"><img src="../../assets/images/add.png" alt="" width="100px"
             class="add editar" data-eleccion={{#if eleccion}} "true"{{else}}"false" {{/if}}></a>
 {{else}}
-    <div class="alert alert-danger alert-dismissible fade show {{#if activeHome}}ms{{/if}}" role="alert">
+    <div class="alert alert-danger alert-dismissible fade show d-flex" role="alert">
         <ul>
             <li>No está Autorizado para visualizar esta Página</li>
         </ul>  

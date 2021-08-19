@@ -1,7 +1,7 @@
 <main class="m-5">
 {{#if isAuthenticated}}  
     {{#if (comparar notPuestos normal)}}
-    <div class="alert alert-danger alert-dismissible fade show {{#if activeHome}}ms{{/if}}" role="alert">
+    <div class="alert alert-danger alert-dismissible fade show d-flex" role="alert">
         <ul>
             <li>No hay Puesto Disponible</li>
         </ul>  
@@ -9,7 +9,7 @@
     </div>  
     {{else}}
     {{#if (comparar notPartidos normal)}}
-     <div class="alert alert-danger alert-dismissible fade show {{#if activeHome}}ms{{/if}}" role="alert">
+     <div class="alert alert-danger alert-dismissible fade show d-flex" role="alert">
         <ul>
             <li>No hay Partidos Disponible</li>
         </ul>  
@@ -90,7 +90,9 @@
 
                     <button type="submit"  class="btn btn-primary" id="candidatos"> {{#if
                         editMode}} Actualizar{{else}}Guardar{{/if}}</button>
-                </form>
+
+                    <a href="/admin/candidatos/" class="btn btn-danger">Cancelar</a>
+                <input type="hidden" name="_csrf" value="{{csrfToken}}"></form>
             </div>
         </div>
         <div class="col-md-4"></div>
@@ -98,7 +100,7 @@
     {{/if}}
     {{/if}}
     {{else}}
-    <div class="alert alert-danger alert-dismissible fade show {{#if activeHome}}ms{{/if}}" role="alert">
+    <div class="alert alert-danger alert-dismissible fade show d-flex" role="alert">
         <ul>
             <li>No está Autorizado para visualizar esta Página</li>
         </ul>  

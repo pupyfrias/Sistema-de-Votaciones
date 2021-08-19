@@ -13,7 +13,7 @@ $(document).ready(function(){
 
                                                
         
-        if (correo.val()==""||correo.val()==null|| correo.val()== undefined ){
+        if (correo.val()==""||correo.val()==null|| correo.val()== undefined || correo.val().includes('@')==false){
             correo.addClass('border-danger');
             correo.focus();
             isValidate = false;

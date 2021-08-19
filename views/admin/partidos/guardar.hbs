@@ -38,13 +38,14 @@
 
                     <button type="submit" class="btn btn-primary" id="partidos"> {{#if
                         editMode}}Actualizar{{else}}Guardar{{/if}}</button>
-                </form>
+                        <a href="/admin/partidos/" class="btn btn-danger">Cancelar</a>
+                <input type="hidden" name="_csrf" value="{{csrfToken}}"></form>
             </div>
         </div> 
         <div class="col-md-4"></div>
     </div>
     {{else}}
-   <div class="alert alert-danger alert-dismissible fade show {{#if activeHome}}ms{{/if}}" role="alert">
+   <div class="alert alert-danger alert-dismissible fade show d-flex" role="alert">
         <ul>
             <li>No está Autorizado para visualizar esta Página</li>
         </ul>  

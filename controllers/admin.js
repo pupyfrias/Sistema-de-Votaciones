@@ -15,6 +15,8 @@ exports.GetHome = (req, res, next) => {
     res.render("admin/home", {
         pageTitle: "Admin Home",
         activeAdmin: true,
+        csrfToken:req.csrfToken()
+
 
     })
 };
@@ -30,24 +32,17 @@ exports.GetPuesto = (req, res, next) => {
         elecciones.findOne({ where: { estado: true } }).then(result => {
             eleccion = result == null ? false : true;
 
-            if(puestosArray.length > 0){
+            res.render("admin/puestos electivos/puestos electivos", {
+                pageTitle: "Puestos Electivos",
+                activePuesto: true,
+                puestos: puestosArray,
+                hiddenNav: true,
+                eleccion: eleccion,
+                empty: puestosArray.length ==0,
+                csrfToken:req.csrfToken()  
                 
-                res.render("admin/puestos electivos/puestos electivos", {
-                    pageTitle: "Puestos Electivos",
-                    activePuesto: true,
-                    puestos: puestosArray,
-                    hiddenNav: true,
-                    eleccion: eleccion,
-    
-                });
-                
-            }
-            else{
 
-                req.flash('erros','No Hay puesto disponible');
-                return res.redirect('/admin/partidos')
-            }
-            
+            });
 
         }).catch(err => {
             console.log(err)
@@ -65,6 +60,7 @@ exports.GetAgregarPuesto = (req, res, next) => {
         pageTitle: "Agregar Puesto",
         activePuesto: true,
         hiddenNav: true,
+        csrfToken:req.csrfToken()
 
     })
 };
@@ -82,6 +78,7 @@ exports.GetEditarPuesto = (req, res, next) => {
             editMode: true,
             puesto: puestoData,
             hiddenNav: true,
+            csrfToken:req.csrfToken()  
 
         })
     }).catch(errs => {
@@ -100,22 +97,16 @@ exports.GetCiudadanos = (req, res, next) => {
         elecciones.findOne({ where: { estado: true } }).then(result => {
             eleccion = result == null ? false : true;
 
-            if(ciudadanosArray.length > 0){
                 res.render("admin/ciudadanos/ciudadanos", {
                     pageTitle: "Ciudadanos",
                     activeCiudadanos: true,
                     ciudadanos: ciudadanosArray,
                     hiddenNav: true,
                     eleccion: eleccion,
+                    empty: ciudadanosArray.length ==0,
+                    csrfToken:req.csrfToken()  
                 });
-            }
-            else{
-
-                req.flash('erros','No Hay Ciudadanos Disponibles');
-                return res.redirect('/admin/ciudadanos');
-            }
-            
-
+      
         }).catch(err => {
             console.log(err)
         });
@@ -132,6 +123,7 @@ exports.GetAgregarCiudadanos = (req, res, next) => {
         pageTitle: "Agregar Ciudadanos",
         activeCiudadanos: true,
         hiddenNav: true,
+        csrfToken:req.csrfToken()
 
     });
 };
@@ -149,6 +141,7 @@ exports.GetEditarCiudadanos = (req, res, next) => {
             editMode: true,
             ciudadanos: ciudadanosData,
             hiddenNav: true,
+            csrfToken:req.csrfToken()  
 
         })
     }).catch(errs => {
@@ -165,21 +158,15 @@ exports.GetPartidos = (req, res, next) => {
         elecciones.findOne({ where: { estado: true } }).then(result => {
             eleccion = result == null ? false : true;
 
-
-            if(partidosArray.length > 0){
                 res.render("admin/partidos/partidos", {
                     pageTitle: "partidos",
                     activePartidos: true,
                     partidos: partidosArray,
                     hiddenNav: true,
                     eleccion: eleccion,
+                    empty: partidosArray.length == 0,
+                    csrfToken:req.csrfToken()  
                 });
-            }
-            else{
-                req.flash('erros','No Hay Partidos Disponibles');
-                return res.redirect('/admin/partidos');
-            }
-           
 
         }).catch(err => {
             console.log(err)
@@ -196,6 +183,7 @@ exports.GetAgregarPartidos = (req, res, next) => {
         pageTitle: "Agregar partidos",
         activePartidos: true,
         hiddenNav: true,
+        csrfToken:req.csrfToken()
 
     });
 };
@@ -213,6 +201,7 @@ exports.GetEditarPartidos = (req, res, next) => {
             editMode: true,
             partidos: partidosData,
             hiddenNav: true,
+            csrfToken:req.csrfToken()  
 
         })
     }).catch(errs => {
@@ -226,13 +215,13 @@ exports.GetElecciones = (req, res, next) => {
     elecciones.findAll({ order: [["estado", "DESC"], ["updatedAt", "DESC"]] }).then(result => {
 
         const eleccionesArray = result.map(result => result.dataValues)
-        let activeAdd = true;
+    
         
 
         ciudadanos.findAll({where:{estado:true}}).then(result=>{
 
             const hasCiudadanos = result.length==0? false:true;
-            activeAdd = hasCiudadanos? true: false
+            let activeAdd = hasCiudadanos? true: false
 
             eleccionesArray.forEach(element=>{
 
@@ -241,32 +230,19 @@ exports.GetElecciones = (req, res, next) => {
                 }
             })
 
-            if(eleccionesArray.length > 0 && hasCiudadanos){
 
                 res.render("admin/elecciones/elecciones", {
                     pageTitle: "Elecciones",
                     activeElecciones: true,
                     elecciones: eleccionesArray,
                     hiddenNav: true,
-                    activeAdd: activeAdd,    
+                    activeAdd: activeAdd,
+                    empty: hasCiudadanos == false  || eleccionesArray.length==0? true: false,
+                    emptyEleccion: eleccionesArray.length==0? '<li>No hay elecciones realizado</li>':"",
+                    emptyCiudadanos: hasCiudadanos == false?'<li>No hay ciudadonos registrado</li>':"",
+                    csrfToken:req.csrfToken(),
+                    
                 });
-            }
-            else if (hasCiudadanos == false){
-
-                req.flash('erros','No hoy ciudadonos registrado');
-                return res.redirect('/admin/eleccion')
-            }
-            else if (eleccionesArray.length > 0  == false){
-
-                req.flash('erros','No hoy elecciones realizado');
-                return res.redirect('/admin/eleccion')
-            }
-            else{
-
-                req.flash('erros','No hoy ciudadonos registrado');
-                req.flash('erros','No hoy elecciones realizado');
-                return res.redirect('/admin/eleccion')
-            }
             
 
         }).catch(err => {
@@ -291,7 +267,7 @@ exports.GetResultado = (req, res, next) => {
     votos.findAll({
         where: { eleccioneId:idEleccion},
         include: [{ model: puestos }, { model: partidos },
-        { model: candidatos },{ model: ciudadanos }]
+        { model: candidatos },{ model: ciudadanos }],order:[['puestoElectivoId','ASC']]
     }).then(result => {
 
         result.forEach(element => {
@@ -405,6 +381,7 @@ exports.GetResultado = (req, res, next) => {
                         activeElecciones: true,
                         hiddenNav: true,
                         datos: votosLista,
+                        csrfToken:req.csrfToken()  
     
                     });
                 }).catch(err => [
@@ -474,12 +451,13 @@ exports.GetAgregarElecciones = (req, res, next) => {
                 pageTitle: "Agregar Elecciones",
                 activeElecciones: true,
                 hiddenNav: true,
+                csrfToken:req.csrfToken()  
             });
         }
         else{
 
-            req.flash('erros','Para iniciar una Elección deben de haber al menos 2 Candidatos activos');
-            return res.redirect('/admin/eleccion')
+            req.flash('errors','Para iniciar una Elección deben de haber al menos 2 Candidatos activos');
+            return res.redirect('/admin/elecciones')
         }
 
       
@@ -503,21 +481,19 @@ exports.GetCandidatos = (req, res, next) => {
         elecciones.findOne({ where: { estado: true } }).then(result => {
             const eleccion = result == null ? false : true;
 
-            if(candidatosArray.length > 0){
-                res.render("admin/candidatos/candidatos", {
-                    pageTitle: "Candidatos",
-                    activeCandidatos: true,
-                    candidatos: candidatosArray,
-                    hiddenNav: true,
-                    eleccion: true,
-                    eleccion: eleccion,
-                });
-            }else{
+            res.render("admin/candidatos/candidatos", {
+                pageTitle: "Candidatos",
+                activeCandidatos: true,
+                candidatos: candidatosArray,
+                hiddenNav: true,
+                eleccion: true,
+                eleccion: eleccion,
+                empty: candidatosArray.length == 0,
+                csrfToken:req.csrfToken()  
+            });
+        
 
-                req.flash('erros','No hoy candidatos disponible');
-                return res.redirect('/admin/candidatos');
-            }
-           
+             
         }).catch(err => {
             console.log(err)
         });
@@ -560,6 +536,7 @@ exports.GetAgregarCandidatos = (req, res, next) => {
                     partidos: partidosArray,
                     hiddenNav: true,
                     normal: true,
+                    csrfToken:req.csrfToken()  
                 });
         }
 
@@ -628,6 +605,7 @@ exports.GetEditarCandidatos = (req, res, next) => {
                                 eleccion: eleccion,
                                 disabledPartido: disabledPartido,
                                 disabledPuesto: disabledPuesto,
+                                csrfToken:req.csrfToken()  
                             })
 
 
@@ -741,6 +719,7 @@ exports.PostGuardarCiudadanos = (req, res, next) => {
                     nombre : nombre ,
                     apellido: apellido,
                     correo : correo, 
+                    csrfToken:req.csrfToken()
                 })   
             }
             else if(datoEmail){
@@ -755,6 +734,7 @@ exports.PostGuardarCiudadanos = (req, res, next) => {
                     nombre : nombre ,
                     apellido: apellido,
                     correo : correo, 
+                    csrfToken:req.csrfToken()
                 })   
             }
             else if(datocedula){
@@ -769,6 +749,7 @@ exports.PostGuardarCiudadanos = (req, res, next) => {
                     nombre : nombre ,
                     apellido: apellido,
                     correo : correo, 
+                    csrfToken:req.csrfToken()
                 })
             }
 

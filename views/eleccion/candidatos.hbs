@@ -9,7 +9,7 @@
             {{#if (comparar ../activeDiputado this.nombre)}}active{{/if}}
             {{#if (comparar ../activeAlcalde this.nombre)}}active{{/if}}
             {{#if (comparar ../activeRegidor this.nombre)}}active{{/if}}
-            " href="/eleccion/{{this.nombre}}">{{this.nombre}}</a>
+            " >{{this.nombre}}</a>
         </li>
         {{/each}}
 
@@ -52,6 +52,6 @@
         </div>
        <input type="hidden" name="enlaces" value=" {{#each puestos}}{{this.nombre}},{{/each}}">
         <button type="submit" id="siguiente" class="siguiente btn btn-primary">Siguiente</button>
-    </form>
+    <input type="hidden" name="_csrf" value="{{csrfToken}}"></form>
 
 </main>

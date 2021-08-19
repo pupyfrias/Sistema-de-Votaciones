@@ -1,5 +1,15 @@
 <main class="m-5">
     {{#if isAuthenticated}}
+      {{#if empty}}
+        <div class="alert alert-danger alert-dismissible fade show " role="alert">
+            <ul>
+                {{{emptyCiudadanos}}}
+                {{{emptyEleccion}}}
+                
+            </ul>  
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+        </div>   
+        {{/if}}
     <div class="row row-cols-md-4">
         {{#each elecciones}}
         <div class="col pt-3">
@@ -18,7 +28,7 @@
                     <form action="/admin/actualizar-elecciones" method="post">
                         <input type="hidden" name="id" value="{{this.id}}">
                         <button type="submit" name="estado" class="btn btn-danger fl">Finalizar</button>
-                    </form>
+                    <input type="hidden" name="_csrf" value="{{../csrfToken}}"></form>
                     {{else}}
                     <a href="/admin/resultado-elecciones/{{this.id}}" class="btn btn-primary fl">Resultado</a>
                     {{/if}}
@@ -36,7 +46,7 @@
     {{/if}}
 
 {{else}}
-    <div class="alert alert-danger alert-dismissible fade show {{#if activeHome}}ms{{/if}}" role="alert">
+    <div class="alert alert-danger alert-dismissible fade show d-flex" role="alert">
         <ul>
             <li>No está Autorizado para visualizar esta Página</li>
         </ul>  

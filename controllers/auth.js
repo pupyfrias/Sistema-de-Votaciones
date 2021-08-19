@@ -1,6 +1,3 @@
-
-
-
 //GET
 exports.GetIndex = (req, res, next) => {
 
@@ -15,18 +12,27 @@ exports.GetIndex = (req, res, next) => {
     res.render("auth/index",{
         pageTitle: "Sistema de Elecciones",
         activeHome: true,
-        activeE: true        
+        activeE: true,
+        csrfToken:req.csrfToken()     
     })
 }
 
 
 exports.GetAdmin = (req, res, next) => {
 
-    res.render("auth/admin", {
-        pageTitle: "Iniciar Sesión",
-        activeAdmin: true,
-        iniciarSesionAdmin: true
-    })
+    if (req.session.isLoggedIn){
+
+        return res.redirect('/admin/home')
+    }
+    else{
+        res.render("auth/admin", {
+            pageTitle: "Iniciar Sesión",
+            activeAdmin: true,
+            iniciarSesionAdmin: true,
+            csrfToken:req.csrfToken()
+        })
+
+    }
     
 };
 

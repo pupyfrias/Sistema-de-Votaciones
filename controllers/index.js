@@ -48,7 +48,8 @@ exports.GetPresidente = (req, res, next)=>{
                 candidatos: candidatosArray,
                 puestos: puestoArray,
                 activePresidente: "Presidente",
-                isVoting: true
+                isVoting: true,
+                csrfToken:req.csrfToken()  
 
             })
         
@@ -74,7 +75,8 @@ exports.GetSenador = (req, res, next)=>{
                 candidatos: candidatosArray,
                 puestos: puestoArray,
                 activeSenador: "Senador",
-                isVoting: true
+                isVoting: true,
+                csrfToken:req.csrfToken()  
             })
         
         }).catch(err=>{
@@ -100,7 +102,8 @@ exports.GetDiputado = (req, res, next)=>{
                 candidatos: candidatosArray,
                 puestos: puestoArray,
                 activeDiputado: "Diputado",
-                isVoting: true
+                isVoting: true,
+                csrfToken:req.csrfToken()  
 
             })
         
@@ -128,7 +131,8 @@ exports.GetAlcalde = (req, res, next)=>{
                 candidatos: candidatosArray,
                 puestos: puestoArray,
                 activeAlcalde: "Alcalde",
-                isVoting: true
+                isVoting: true,
+                csrfToken:req.csrfToken()  
 
             })
         
@@ -157,7 +161,8 @@ exports.GetRegidor = (req, res, next)=>{
                 candidatos: candidatosArray,
                 puestos: puestoArray,
                 activeRegidor: "Regidor",
-                isVoting: true
+                isVoting: true,
+                csrfToken:req.csrfToken()  
                 
             })
         
@@ -187,7 +192,8 @@ exports.GetEleccion =(req,res,next)=>{
             hasvoted: hasvoted,
             nombre: nombreEleccion,
             fecha: fechaEleccion,
-            isVoting: true
+            isVoting: true,
+            csrfToken:req.csrfToken()  
         });
   
 }
@@ -305,7 +311,9 @@ exports.PostEleccion = (req, res, next) => {
                                     activeHome: true,
                                     puestos: puestoArray[0],
                                     nombre: nombreEleccion,
-                                    fecha: fechaEleccion
+                                    fecha: fechaEleccion,
+                                    csrfToken:req.csrfToken(),
+
                                 })
                             }
                                
@@ -425,7 +433,9 @@ exports.PostElegido = (req, res, next)=> {
                 activeHome: true,
                 activeE: true,
                 hasInfo: true,
-                info: text     
+                info: text,
+                csrfToken:req.csrfToken(),
+     
             });
             
         })
