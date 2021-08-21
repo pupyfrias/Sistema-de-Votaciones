@@ -1,7 +1,5 @@
 $(document).ready(function(){
 
-    
- 
     const nombre = $('#nombre');
     const apellido = $('#apellido');
     const partido = $('#partido');
@@ -9,9 +7,8 @@ $(document).ready(function(){
     const logo = $('#logo');
     const estado = $('#estado');
 
-  
     const puestoVal = puesto.val();
-    const partidoVal = puesto.val();
+    const partidoVal = partido.val();
 
     let disabledPartido = false;
     let disabledPuesto = false;
@@ -23,7 +20,7 @@ $(document).ready(function(){
     }
 
     if($('#puesto').data('disabled')){
-
+        
         $('#estado').attr('disabled','true')
         disabledPuesto = true
     }
@@ -31,30 +28,36 @@ $(document).ready(function(){
     $('#puesto').on('change',function(){
         if(disabledPuesto){
             if(puestoVal !== puesto.val()){
-                if(disabledPartido==false){
+                if(disabledPartido===false){
                     $('#estado').removeAttr('disabled')
+                   $('#estado').val("true")
                 }
                 else{
                     disabledPuesto = false;
                 }
             }
             else{
-                $('#estado').attr('disabled','true')                
+                $('#estado').val("false")
+                $('#estado').attr('disabled','true')
+                
             }             
         }  
     }); 
     $('#partido').on('change',function(){
         if(disabledPartido){
+
             if(partidoVal !== partido.val()){
                 if(disabledPuesto==false){
                     $('#estado').removeAttr('disabled')
+                    $('#estado option[value="true"]').attr('selected', 'selected')
                 }
                 else{
                     disabledPartido = false;
                 }
             }
-            else{
-                $('#estado').attr('disabled','true')                
+            else{              
+                $('#estado option[value="false"]').attr('selected', 'selected')
+                $('#estado').attr('disabled','true')                                
             }             
         }  
     });        

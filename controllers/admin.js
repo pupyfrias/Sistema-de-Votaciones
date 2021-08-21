@@ -301,13 +301,6 @@ exports.GetResultado = (req, res, next) => {
                     if (element[1] === candidato_Id ) {
                         let voto = element[0]
                         element[0] = voto + 1
-                        
-                        const i = votosLista[puesto].indexOf(element)
-                        const nuevo = votosLista[puesto][i]
-                        
-                        delete votosLista[puesto][i]
-                        votosLista[puesto].unshift(nuevo)
-                        
                     }
                     else {
     
@@ -329,7 +322,6 @@ exports.GetResultado = (req, res, next) => {
             
         });
        
-        
         participantes.findAll({where:{eleccioneId: idEleccion}}).then(result=>{
 
             const data = result.map(result=>result.dataValues)
@@ -375,6 +367,46 @@ exports.GetResultado = (req, res, next) => {
                         votosLista[puesto].push([ 0,candidato_Id, nombre, apellido, foto, logo, partido, 0])
 
                     })
+
+
+                    
+                    let nuevoMax = null;
+                    let max = 0;
+                    let indexMax = 0
+                    let nuevoMin = null;
+                    let min = 100;
+                    let indexMin = 0
+                    
+                    for (let item in votosLista){
+                        
+                        votosLista[item].forEach(element=>{
+                                       
+                            const i = votosLista[item].indexOf(element)
+
+                            if(element[0]> max){
+
+                                max = element[0];
+                                nuevoMax = votosLista[item][i];
+                                indexMax = i;      
+                            }
+    
+                            
+                                                                                                            
+                        })
+
+                        delete votosLista[item][indexMax];
+                        votosLista[item].unshift(nuevoMax);
+                        max = 0 
+
+                        
+                        console.log("***********************************");
+                
+                                             
+                    }
+                    
+                    //console.log(votosLista);
+                    
+
 
                     res.render("admin/elecciones/resultado", {
                         pageTitle: "Resultado de la Elección",
@@ -456,7 +488,7 @@ exports.GetAgregarElecciones = (req, res, next) => {
         }
         else{
 
-            req.flash('errors','Para iniciar una Elección deben de haber al menos 2 Candidatos activos');
+            req.flash('errors','Para iniciar una Elección deben de haber al menos 2 Candidatos y puestos iguales activos');
             return res.redirect('/admin/elecciones')
         }
 

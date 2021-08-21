@@ -33,7 +33,7 @@
                     </div>
                     <div class="mb-3">
                         <label for="correo" class="form-label">Correo</label>
-                        <input type="email" class="form-control  {{#if errorEmail}} border-danger{{/if}}" name="correo" id="correo" {{#if editMode}}disabled value="{{ciudadanos.email}}"
+                        <input type="email" class="form-control  {{#if errorEmail}} border-danger{{/if}}" name="correo" id="correo" {{#if editMode}}value="{{ciudadanos.email}}"
                             {{/if}} {{#if error}} value="{{correo}}"{{/if}}>
                     </div>
 
@@ -42,7 +42,7 @@
                     <div class="mb-3">
                         <label for="estado" class="form-label">Estado</label>
                         <select class="form-select" aria-label="Default select example" name="estado" id="estado">
-                            <option value="false">No está Disponible</option> 
+                            <option value="false">No Disponible</option> 
                             <option value="true" {{#if ciudadanos.estado}} selected{{/if}}>Disponible</option>
                                                     
                         </select>

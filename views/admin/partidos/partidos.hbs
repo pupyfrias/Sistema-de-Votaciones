@@ -18,7 +18,7 @@
                         <img src="{{this.logo}}" alt="" class="img-fill mb-3">
                         <span id="nombre"><strong>Nombre: </strong>{{this.nombre}}</span><br>
                         <span id="nombre"><strong>Descripcion: </strong>{{this.descripcion}}</span><br>
-                        <span id="estado"><strong>Estado: </strong>{{#if this.estado}}Disponible <span class="green-circle"></span>{{else}}No está Disponible <span class="red-circle"></span>{{/if}}</span>
+                        <span id="estado"><strong>Estado: </strong>{{#if this.estado}}Disponible <span class="green-circle"></span>{{else}}No Disponible <span class="red-circle"></span>{{/if}}</span>
                     </p>
                     <a href="/admin/editar-partidos/{{this.id}}?edit=true" class="btn btn-primary fl editar" data-eleccion={{#if ../eleccion}} "true"{{else}}"false" {{/if}}>Editar</a>
                 </div>

@@ -9,7 +9,7 @@ const nodemailer = require('nodemailer');
 
 
 let puestoArray = null;
-let hasEleccion = 0;
+let hasEleccion = false;
 let ciudadanoData = null;
 let hasvoted = null;
 let nombreEleccion = null;
@@ -253,7 +253,7 @@ exports.PostEleccion = (req, res, next) => {
                     if(result){
 
                         idEleccion = result.dataValues.id
-                        hasEleccion = idEleccion ;
+                        hasEleccion = true ;
                         nombreEleccion = result.dataValues.nombre;
                         fechaEleccion = result.dataValues.fecha;
                     }
@@ -262,12 +262,11 @@ exports.PostEleccion = (req, res, next) => {
                         puestoArray = result.map(result=> result.dataValues);
                         
                         votos.findOne({where:{ciudadanoId:ciudadanoData.id,
-                            eleccioneId: hasEleccion
+                            eleccioneId: idEleccion
 
                         }}).then(result=>{
                            
                             hasvoted = result? true: false;
-                            hasEleccion = hasEleccion== 0? false:true;
 
                             let canVoted= false;
                             if(hasvoted == false && ciudadanoData.estado && hasEleccion){
@@ -312,13 +311,9 @@ exports.PostEleccion = (req, res, next) => {
                                     puestos: puestoArray[0],
                                     nombre: nombreEleccion,
                                     fecha: fechaEleccion,
-                                    csrfToken:req.csrfToken(),
-
+                                    csrfToken:req.csrfToken()                                   
                                 })
                             }
-                               
-                            
-                            
 
                         }).catch(err=>{
                             console.log(err)
@@ -364,9 +359,7 @@ exports.PostElegido = (req, res, next)=> {
   
     if(enlaces.length ===0){
 
-
         votosArray.forEach(element =>{
-
             votos.create({eleccioneId:element[0],
                 ciudadanoId: element[1],
                 candidatoId:element[2]	,
@@ -425,8 +418,9 @@ exports.PostElegido = (req, res, next)=> {
             " con tu elección"
         
           
-           req.session.destroy(err=>{
-            console.log(err);
+            req.session.destroy(err=>{
+                console.log(err);
+        })
             
             res.render("auth/index",{
                 pageTitle: "Sistema de Elecciones",
@@ -434,11 +428,10 @@ exports.PostElegido = (req, res, next)=> {
                 activeE: true,
                 hasInfo: true,
                 info: text,
-                csrfToken:req.csrfToken(),
-     
+                voted: true
+
             });
             
-        })
        
     }else{
         

@@ -19,7 +19,7 @@
                         <span id="nombre"><strong>Nombre: </strong>{{this.nombre}}</span><br>
                         <span id="nombre"><strong>Apellido: </strong>{{this.apellido}}</span><br>
                         <span id="nombre"><strong>Correo: </strong>{{this.email}}</span><br>
-                        <span id="estado"><strong>Estado: </strong>{{#if this.estado}}Disponible <span class="green-circle"></span>{{else}}No está Disponible <span class="red-circle"></span>{{/if}}</span>
+                        <span id="estado"><strong>Estado: </strong>{{#if this.estado}}Disponible <span class="green-circle"></span>{{else}}No Disponible <span class="red-circle"></span>{{/if}}</span>
                     </p>
                     <a href="/admin/editar-ciudadanos/{{this.id}}?edit=true" class="btn btn-primary fl editar" data-eleccion={{#if ../eleccion}} "true"{{else}}"false" {{/if}}>Editar</a>
                     
